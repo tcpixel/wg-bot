@@ -123,8 +123,8 @@ async def ticket_request():
 #####
 @tasks.loop(hours=1)
 async def racoonpics():
-    if (datetime.now().weekday() == 2) and (datetime.now().hour == 18):
-        print("Racoon of the day wird gepostet.")
+    if (datetime.now().weekday() == 0) and (datetime.now().hour == 7): #hour 7 = hour 9 (UTC+2)
+        print(str(datetime.now())+" "+str(datetime.now())+" - Racoon of the week wird gepostet.")
         channel = bot.get_channel(int(racoonPicsChannelId))
         logChannel = bot.get_channel(int(botLogChannelId))
         meme_files = [f for f in os.listdir('./racoonpics') if os.path.isfile(os.path.join('./racoonpics', f))]
