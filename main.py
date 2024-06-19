@@ -5,6 +5,10 @@ import asyncio
 import requests
 from bs4 import BeautifulSoup
 import urllib3
+import os
+import random
+import shutil
+from datetime import datetime, timedelta
 
 urllib3.disable_warnings()
 
@@ -19,6 +23,7 @@ async def on_ready():
     print(f'Logged in as {bot.user.name}')
     daily_cleanup.start()
     ticket_request.start()
+    racoonpics.start()
 
 
 #####
@@ -111,6 +116,32 @@ async def ticket_request():
                 print("Ticket gefunden: "+ticket)
                 content = "@everyone 🟥 Ein neues **Montag*** Ticket ist verfügbar.\n"+ticket+"\nhttps://www.sbtix.de/swp/for/69602-tickets-fruehanreise-slots-dienstag-sinbronn-dinkelsbuehl-am-13-08-2024"
                 await channel.send(content, allowed_mentions=allowed_mentions)
+
+
+#####
+# Racoon of the Day
+#####
+@tasks.loop(hours=1)
+async def racoonpics():
+    if (datetime.now().weekday() == 2) and (datetime.now().hour == 18):
+        print("Racoon of the day wird gepostet.")
+        channel = bot.get_channel(int(racoonPicsChannelId))
+        logChannel = bot.get_channel(int(botLogChannelId))
+        meme_files = [f for f in os.listdir('./racoonpics') if os.path.isfile(os.path.join('./racoonpics', f))]
+        if not meme_files:
+            await channel.send("Diese Woche leider kein Waschbär 🥲")
+            return
+
+        selected_meme = random.choice(meme_files)
+        meme_path = os.path.join('./racoonpics', selected_meme)
+        await channel.send(file=discord.File(meme_path))
+        # Move the posted meme to the 'posted' folder
+        shutil.move(meme_path, os.path.join('./racoonpics/posted/', selected_meme))
+
+        if len(meme_files) <= 6:
+            await logChannel.send("Warnung, nur noch "+str(len(meme_files)-1)+" Waschbär-Bilder im Ordner.")
+
+
 
 # Run the bot
 bot.run(botToken)
