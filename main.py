@@ -77,7 +77,7 @@ async def ticket_request():
     #     return 0
     # if (lastStatusCode!=200) and (result.status_code!=200):
     #     print("Website Fehler")
-    #     content = "@"+ninoUserId+" Es ist ein Fehler aufgetreten. Die Website ist nicht erreichbar.\nStatus Code: "+result.status_code
+    #     content = "@"+ninoUserId+" Es ist ein Fehler aufgetreten. Die Website ist nicht erreichbar.\nStatus Code: "+str(result.status_code)
     #     await channel.send(content, allowed_mentions=allowed_mentions)
     #     return 0
 
@@ -100,7 +100,7 @@ async def ticket_request():
     if result.status_code == 404:
         return 0
     if (lastStatusCode!=200) and (result.status_code!=200):
-        content = "@"+ninoUserId+" Es ist ein Fehler aufgetreten. Die Website ist nicht erreichbar.\nStatus Code: "+result.status_code
+        content = "@"+ninoUserId+" Es ist ein Fehler aufgetreten. Die Website ist nicht erreichbar.\nStatus Code: "+str(result.status_code)
         await channel.send(content, allowed_mentions=allowed_mentions)
         return 0
 
