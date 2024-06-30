@@ -70,29 +70,29 @@ async def daily_cleanup():
 async def ticket_request():
     allowed_mentions = discord.AllowedMentions(everyone = True)
     channel = bot.get_channel(int(summerBreezeChannelId))
-    result = requests.get('https://www.sbtix.de/swp/for/69602-tickets-fruehanreise-slots-dienstag-sinbronn-dinkelsbuehl-am-13-08-2024', verify=False)
-    lastStatusCode = result.status_code
+    # result = requests.get('https://www.sbtix.de/swp/for/69602-tickets-fruehanreise-slots-dienstag-sinbronn-dinkelsbuehl-am-13-08-2024', verify=False)
+    # lastStatusCode = result.status_code
 
-    if result.status_code == 404:
-        return 0
-    if (lastStatusCode!=200) and (result.status_code!=200):
-        print("Website Fehler")
-        content = "@"+ninoUserId+" Es ist ein Fehler aufgetreten. Die Website ist nicht erreichbar.\nStatus Code: "+result.status_code
-        await channel.send(content, allowed_mentions=allowed_mentions)
-        return 0
+    # if result.status_code == 404:
+    #     return 0
+    # if (lastStatusCode!=200) and (result.status_code!=200):
+    #     print("Website Fehler")
+    #     content = "@"+ninoUserId+" Es ist ein Fehler aufgetreten. Die Website ist nicht erreichbar.\nStatus Code: "+result.status_code
+    #     await channel.send(content, allowed_mentions=allowed_mentions)
+    #     return 0
 
-    soup = BeautifulSoup(result.content, 'html.parser')
-    tabellenZeilen = soup.find_all('tr')
-    for zeile in tabellenZeilen:
-        spalten = zeile.find_all('td')
-        if spalten:
-            ticket = str(spalten[0].contents[0])
-            if ("Anhängerticket" in ticket) or ("Green Camping" in ticket) or ("Comfort Camping" in ticket) or ("Reserved" in ticket) or ("19:00" in ticket):  
-                continue
-            else:
-                print("Ticket gefunden: "+ticket)
-                content = "@everyone 🟩 Ein neues Dienstag Ticket ist verfügbar.\n"+ticket+"\nhttps://www.sbtix.de/swp/for/69602-tickets-fruehanreise-slots-dienstag-sinbronn-dinkelsbuehl-am-13-08-2024"
-                await channel.send(content, allowed_mentions=allowed_mentions)
+    # soup = BeautifulSoup(result.content, 'html.parser')
+    # tabellenZeilen = soup.find_all('tr')
+    # for zeile in tabellenZeilen:
+    #     spalten = zeile.find_all('td')
+    #     if spalten:
+    #         ticket = str(spalten[0].contents[0])
+    #         if ("Anhängerticket" in ticket) or ("Green Camping" in ticket) or ("Comfort Camping" in ticket) or ("Reserved" in ticket) or ("19:00" in ticket):  
+    #             continue
+    #         else:
+    #             print("Ticket gefunden: "+ticket)
+    #             content = "@everyone 🟩 Ein neues Dienstag Ticket ist verfügbar.\n"+ticket+"\nhttps://www.sbtix.de/swp/for/69602-tickets-fruehanreise-slots-dienstag-sinbronn-dinkelsbuehl-am-13-08-2024"
+    #             await channel.send(content, allowed_mentions=allowed_mentions)
 
     # Zweite Abfrage (Montag)
     result = requests.get('https://www.sbtix.de/swp/for/69706-tickets-fruehanreise-slots-montag-sinbronn-dinkelsbuehl-am-12-08-2024', verify=False)
